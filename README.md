@@ -1,2 +1,3 @@
-<img width="200" height="400" alt="HEIF Image" src="https://github.com/user-attachments/assets/d15732db-3555-4561-ae65-a1c34e9c296d" />
+
 Hey, I’m Jake Pearlman. I’m a senior Computer Science student. I enjoy building things that blur the lines between logic and creativity whether that’s a game, tool, or some random idea that popped into my head at 2 a.m. I love learning new tech just to see what I can make with it. When I’m not behind a screen, you’ll probably find me on the golf course, playing a round of disc golf, or out fishing somewhere. 
+<img width="200" height="400" alt="HEIF Image" src="https://github.com/user-attachments/assets/d15732db-3555-4561-ae65-a1c34e9c296d" />
