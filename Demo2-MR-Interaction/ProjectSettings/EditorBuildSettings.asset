@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/DuckyDev.unity
+    guid: 9c8c8e1e843564c298c8362a77997cc5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 5169e412cdde24b28974cf6bcf9db3ab, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 9f2c7ef145ae54b079061387269ed9f8, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 42d343c1335ae40d6b83894e317f17e3, type: 2}
   m_UseUCBPForAssetBundles: 0
