@@ -1,12 +1,19 @@
 {
   "dependencies": {
+    "com.meta.xr.sdk.core": "81.0.0",
+    "com.meta.xr.simulator": "81.0.0",
+    "com.unity.asset-manager-for-unity": "1.8.0",
     "com.unity.collab-proxy": "2.9.3",
+    "com.unity.device-simulator.devices": "1.0.1",
     "com.unity.feature.development": "1.0.2",
     "com.unity.inputsystem": "1.14.2",
     "com.unity.multiplayer.center": "1.0.0",
+    "com.unity.probuilder": "6.0.7",
     "com.unity.timeline": "1.8.9",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.7",
+    "com.unity.xr.meta-openxr": "2.3.0",
+    "com.unity.xr.openxr": "1.15.1",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -39,5 +46,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "Meta",
+      "url": "https://npm.developer.oculus.com",
+      "scopes": [
+        "com.meta"
+      ]
+    }
+  ]
 }

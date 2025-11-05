@@ -1,0 +1,152 @@
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.UI;
+
+
+#if UNITY_EDITOR
+	[CustomEditor(typeof(WorldMouseWithLaser))]
+	[CanEditMultipleObjects]
+	public class WorldMouseWithLaserEditor : Editor
+	{
+		public override void OnInspectorGUI()
+		{
+			EditorGUILayout.LabelField("Provides a laser pointer as well as interaction with UI.");
+			EditorGUILayout.Space();
+
+			base.OnInspectorGUI();
+		}
+	}
+#endif
+
+	public class WorldMouseWithLaser : WorldMouse
+	{
+		public InputAction cursor;
+		public InputAction vibration;
+
+		[Space] public bool useLaser = true;
+		public Material laserMaterial;
+		/// <summary>
+		/// Default laser color. Can't be changed during runtime
+		/// </summary>
+		public Color laserColor = Color.black;
+
+		/// <summary>
+		/// Default laser width. Can't be changed during runtime
+		/// </summary>
+		public float laserThickness = .005f;
+
+		private LineRenderer lineRend;
+
+		private bool showThisFrame = false;
+
+
+		[Header("On Click")] public float vibrateOnClick = .5f;
+		public AudioClip soundOnClick;
+
+		[Header("On Hover")] public float vibrateOnHover = .1f;
+		public AudioClip soundOnHover;
+
+		protected void Start()
+		{
+			cursor.Enable();
+			vibration.Enable();
+			if (useLaser)
+			{
+				CreateLaser();
+			}
+
+			OnClickDown += OnClicked;
+			OnHoverStart += OnHover;
+		}
+
+
+		private void OnHover(GameObject obj)
+		{
+			if (obj != null && obj.GetComponentInParent<Selectable>() != null && vibrateOnHover > 0)
+			{
+			(vibration.controls[0].device as XRControllerWithRumble).SendImpulse(1, .01f); //shorter by a few characters
+			if (soundOnHover != null) AudioSource.PlayClipAtPoint(soundOnHover, obj.transform.position, .5f);
+			}
+		}
+
+		private void OnClicked(GameObject obj)
+		{
+			if (obj != null && obj.GetComponentInParent<Selectable>() != null && vibrateOnClick > 0)
+			{
+			(vibration.controls[0].device as XRControllerWithRumble).SendImpulse(1, .01f); //shorter by a few characters
+			if (soundOnClick != null) AudioSource.PlayClipAtPoint(soundOnClick, obj.transform.position, .5f);
+			}
+		}
+
+		private void CreateLaser()
+		{
+			lineRend = new GameObject("UI Interaction").AddComponent<LineRenderer>();
+			lineRend.transform.SetParent(transform);
+			lineRend.transform.localPosition = Vector3.zero;
+			lineRend.transform.localRotation = Quaternion.identity;
+			lineRend.widthMultiplier = laserThickness;
+			lineRend.positionCount = 2;
+			if (laserMaterial == null) {
+				lineRend.material = new Material(Shader.Find("Unlit/Color"))
+				{
+					color = laserColor
+				};
+			} else {
+				lineRend.material = laserMaterial;
+			}
+		}
+
+		protected override void Update()
+		{
+			if (useLaser)
+			{
+				if (currentRayLength < Mathf.Infinity)
+				{
+					SetLaserLength(currentRayLength);
+					ShowLaser(true);
+				}
+
+				ShowLaserUpdate();
+			}
+
+			if (cursor.WasPressedThisFrame())
+			{
+				Press();
+			}
+
+			if (cursor.WasReleasedThisFrame())
+			{
+				Release();
+			}
+			
+			base.Update();
+		}
+
+		public void ShowLaser(bool show)
+		{
+			if (show)
+			{
+				showThisFrame = true;
+			}
+		}
+
+		/// <summary>
+		/// Called once an update to actually show the laser or not.
+		/// </summary>
+		private void ShowLaserUpdate()
+		{
+			if (lineRend == null) CreateLaser();
+			lineRend.gameObject.SetActive(showThisFrame);
+			showThisFrame = false;
+		}
+
+		public void SetLaserLength(float length)
+		{
+			if (lineRend == null) CreateLaser();
+			lineRend.SetPositions(new Vector3[] { transform.position, transform.position + transform.forward * length });
+		}
+	}
